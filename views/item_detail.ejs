@@ -7,9 +7,13 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <% category_list.forEach(function(category){ %>
-    <li><a href="<%=category.url%>"><%=category.name %></a></li>  
-    <% }) %>
+    <div>
+      <p>item_detail.name</p>
+      <p>item_detail.description</p>
+      <p>item_detail.price</p>
+      <p>item_detail.category</p>
+      <p>item_detail.stock</p>
+
+    </div>
   </body>
 </html>
