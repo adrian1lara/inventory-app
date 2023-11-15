@@ -7,7 +7,7 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <p>Welcome to <%= title %></p> - <a href="/category/create">create new category</a>
     <% category_list.forEach(function(category){ %>
     <li><a href="<%=category.url%>"><%=category.name %></a></li>  
     <% }) %>
