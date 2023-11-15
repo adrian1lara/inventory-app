@@ -1,5 +1,6 @@
 const Category = require('../models/category');
 const asyncHanlder = require('express-async-handler');
+const { body, validationResult } = require('express-validator');
 const mongoose = require('mongoose')
 
 // list of all catgories
@@ -39,3 +40,47 @@ exports.category_detail = asyncHanlder(async (req, res, next) => {
     return next(err);
   }
 });
+
+// category create on get 
+exports.category_create_get = (req, res, next) => {
+  res.render('category_form', { title: 'Create Category' });
+};
+
+// hanlde category create on post
+exports.genre_create_post = [
+
+  body('name', 'Category name must contain min 3 characters')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+
+  // after validation process request
+  asyncHanlder(async (req, res, next) => {
+
+    const errors = validationResult(req);
+
+    const category = new Category({ name: req.body.name, description: req.body.description });
+
+    if (!errors.isEmpty()) {
+      res.render('category_form', {
+        title: 'Create category',
+        category: category,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const categoryExists = await Category.findOne({ name: req.body.name }).exec();
+      if (categoryExists) {
+        res.redirect(categoryExists.url);
+      } else {
+        await category.save();
+
+        res.redirect(category.url)
+      }
+    }
+  })
+]
+
+
+
+

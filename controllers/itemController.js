@@ -2,6 +2,7 @@ const Items = require('../models/items');
 const Category = require('../models/category');
 const asyncHandler = require('express-async-handler');
 const mongoose = require('mongoose');
+const { body, validationResult } = require('express-validator');
 
 
 // display list of items
@@ -24,15 +25,83 @@ exports.item_detail = asyncHandler(async (req, res, next) => {
 
     const oneItem = await Items.findById(req.params.id).exec();
 
-    if (!oneCategory) {
+    if (!oneItem) {
       return res.status(404).send('Item not found');
     }
 
+    const category = await Category.findById(oneItem.category).exec();
+
     res.render('item_detail', {
       title: oneItem.name,
-      item_detail: oneItem
+      item_detail: oneItem,
+      categoryName: category,
     });
   } catch (error) {
     return next(error);
   }
 });
+
+// get create form for item 
+exports.item_create_get = asyncHandler(async (req, res, next) => {
+
+  const allCategories = await Category.find().exec();
+
+  res.render('item_form', {
+    title: 'Create Item',
+    categories: allCategories,
+  });
+});
+
+
+// handle item create on post
+exports.item_create_post = [
+
+  // validate and sanitize fields
+  body('name', 'Name must not be empty.')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('description', 'item need a description')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('category')
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body('price')
+    .toFloat()
+    .escape(),
+  body('stock')
+    .toInt()
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+
+    const errors = validationResult(req);
+
+    const item = new Items({
+      name: req.body.name,
+      description: req.body.description,
+      category: req.body.category,
+      price: req.body.price,
+      stock: req.body.stock,
+    });
+
+    if (!errors.isEmpty()) {
+
+      const allCategories = await Category.find().exec();
+
+      res.render('item_form', {
+        title: 'Create item',
+        categories: allCategories,
+        item: item,
+        errors: errors.array(),
+      });
+    } else {
+
+      await item.save();
+      res.redirect(item.url);
+    }
+  }),
+];
