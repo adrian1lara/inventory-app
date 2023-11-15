@@ -46,9 +46,17 @@ exports.item_create_get = asyncHandler(async (req, res, next) => {
 
   const allCategories = await Category.find().exec();
 
+  const item = {
+    name: '',
+    description: '',
+    price: '',
+    stock: '',
+  }
+
   res.render('item_form', {
     title: 'Create Item',
     categories: allCategories,
+    item: item,
   });
 });
 
@@ -138,3 +146,84 @@ exports.item_delete_post = asyncHandler(async (req, res, next) => {
     return next(error);
   }
 })
+
+
+// display item update on GET
+exports.item_update_get = asyncHandler(async (req, res, next) => {
+
+  const [item, allCategories] = await Promise.all([
+    Items.findById(req.params.id).populate('category').exec(),
+    Category.find().exec(),
+  ])
+
+  if (item === null) {
+    // no results
+    const err = new Error('Item not found');
+    err.status = 404;
+    return next(err);
+  }
+
+
+  res.render('item_form', {
+    title: 'Update item',
+    categories: allCategories,
+    item: item,
+  });
+});
+
+
+// handle item update on POST 
+exports.item_update_post = [
+  // validate and sanitize fields
+  body('name', 'Name must not be empty.')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('description', 'item need a description')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('category')
+    .trim()
+    .isLength({ min: 1 })
+    .escape(),
+  body('price')
+    .toFloat()
+    .escape(),
+  body('stock')
+    .toInt()
+    .escape(),
+
+  asyncHandler(async (req, res, next) => {
+
+    const errors = validationResult(req);
+
+    const item = new Items({
+      name: req.body.name,
+      description: req.body.description,
+      category: req.body.category,
+      price: req.body.price,
+      stock: req.body.stock,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+
+      const allCategories = await Category.find().exec();
+
+      res.render('item_form', {
+        title: 'Update item',
+        categories: allCategories,
+        item: item,
+        errors: errors.array(),
+      });
+      return;
+    } else {
+      const updateItem = await Items.findByIdAndUpdate(req.params.id, item, {});
+
+      res.redirect(updateItem.url);
+    }
+
+
+  })
+]
