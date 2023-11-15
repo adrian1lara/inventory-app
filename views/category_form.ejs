@@ -10,11 +10,11 @@
     <form method='POST' action=''>
       <div>
         <label for="name">Category</label>
-        <input type="text" name="name" placeholder='enter catgeory name' required='true'
+        <input type="text" name="name" placeholder='enter category name' required='true' value='<%=undefined === category.name ? "" : category.name %>' />
       </div>
 
       <div>
-        <textarea rows="" cols="" name='description'></textarea>
+        <textarea rows="" cols="" name='description'><%=undefined === category.description ? "" : category.description%></textarea>
       </div>
 
       <button type="submit">save</button> 
