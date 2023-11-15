@@ -10,28 +10,29 @@
     <form method='POST' action=''>
       <div>
         <label for="name">Item name: </label>
-        <input type="text" name="name" />
+        <input type="text" name="name" value='<%=item.name%>' required='true'/>
       </div>
       <div>
         <label for="description">description:</label>
-        <textarea rows="" cols="" name='description'></textarea>
+        <textarea rows="" cols="" name='description'><%=item.description%></textarea>
       </div>
       <div>
         <select name='category'>
           <% categories.forEach(function(option) { %>
-          <option value="<%=option._id%>"><%=option.name%></option>
+          <option value="<%=option._id%>" <%= item.category && item.category.equals(option._id) ? 'selected' : '' %>><%=option.name%></option>   
           <% }) %>
         </select>
       </div>
       <div>
         <label for="price">price:</label>
-        <input type="number" name="price" />
+        <input type="number" name="price" value='<%=item.price%>'/>
       </div>
       <div>
         <label for="stock">stock</label>
-        <input type="number" name="stock" />
+        <input type="number" name="stock" value='<%=item.stock%>'/>
       </div>
       <button type="submit">Save</button>
     </form>
+    <a href="/items">back</a>
   </body>
 </html>
