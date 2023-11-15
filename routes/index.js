@@ -36,6 +36,8 @@ router.get('/category/:id/delete', category_controller.category_delete_get);
 // Handle category delete form on POST
 router.post('/category/:id/delete', category_controller.category_delete_post);
 
+
+
 // items routes 
 router.get('/items', items_controller.item_list);
 
@@ -44,6 +46,12 @@ router.get('/item/create', items_controller.item_create_get);
 
 // post request for creating item 
 router.post('/item/create', items_controller.item_create_post);
+
+// get update form
+router.get('/item/:id/update', items_controller.item_update_get);
+
+// post update form
+router.post('/item/:id/update', items_controller.item_update_post);
 
 // get one item 
 router.get('/item/:id', items_controller.item_detail);
