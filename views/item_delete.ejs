@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Do you really want to delete this item?</p>
+    <p><%=item.name%></p>
+    <form method='POST' action=''>
+      <div>
+        <input type="hidden" name="itemid" value="<%=item._id%>" required='true' />
+      </div>
+      <button type="submit">delete</button>
+    </form>
+  </body>
+</html>

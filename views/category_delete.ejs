@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1><%=category.name %></h1>
+    <% if (category_items.length) { %>
+      <p>Delete the following item before attemting to delete this category.</p>
+    <div>
+      <h4>Items</h4>
+    </div>
+   
+    <% category_items.forEach(function(items) { %>
+      <dt>
+        <a href="<%=items.url %>"><%= items.name %></a>
+      </dt>
+      <dd><%= items.description %></dd>
+    <% }); %>
+    
+    <%} else {%>
+    <p>Do you really want to delete this category?</p>
+    <form method='POST' action=''>
+      <div>
+        <input type="hidden" name="categoryid" value="<%= category._id %>" required='true'>
+      </div>
+      <button type="submit">delete</button>
+    </form>
+    <%} %>
+  </body>
+</html>
