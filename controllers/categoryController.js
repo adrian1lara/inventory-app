@@ -44,15 +44,27 @@ exports.category_detail = asyncHanlder(async (req, res, next) => {
 
 // category create on get 
 exports.category_create_get = (req, res, next) => {
-  res.render('category_form', { title: 'Create Category' });
+
+  const category = {
+    name: '',
+    description: '',
+  }
+
+  res.render('category_form', {
+    title: 'Create Category',
+    category: category,
+  });
 };
 
 // hanlde category create on post
-exports.genre_create_post = [
+exports.category_create_post = [
 
   body('name', 'Category name must contain min 3 characters')
     .trim()
     .isLength({ min: 3 })
+    .escape(),
+  body('description')
+    .trim()
     .escape(),
 
   // after validation process request
@@ -124,6 +136,63 @@ exports.category_delete_post = asyncHanlder(async (req, res, next) => {
     res.redirect('/categories');
   }
 });
+
+
+
+// display category update form on get 
+exports.category_update_get = asyncHanlder(async (req, res, next) => {
+  const category = await Category.findById(req.params.id).exec();
+
+  if (category === null) {
+    // no results
+    const err = new Error('category not found');
+    err.status = 400;
+    return next(err);
+  }
+
+  res.render('category_form', {
+    title: 'Update category',
+    category: category,
+  });
+});
+
+// handle category update on POST 
+exports.category_update_post = [
+
+  body('name', 'name must not be empty.')
+    .trim()
+    .isLength({ min: 3 })
+    .escape(),
+  body('description')
+    .trim()
+    .escape(),
+
+  asyncHanlder(async (req, res, next) => {
+
+    const errors = validationResult(req);
+
+    const category = new Category({
+      name: req.body.name,
+      description: req.body.description,
+      _id: req.params.id,
+    });
+
+    if (!errors.isEmpty()) {
+
+      res.render('category_form', {
+        title: 'Update Category',
+        category: category,
+        errors: errors.array()
+      });
+
+      return;
+    } else {
+      const updateCategory = await Category.findByIdAndUpdate(req.params.id, category, {});
+
+      res.redirect(updateCategory.url);
+    }
+  })
+]
 
 
 
