@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <form method='POST' action=''>
+      <div>
+        <label for="name">Category</label>
+        <input type="text" name="name" placeholder='enter catgeory name' required='true'
+      </div>
+
+      <div>
+        <textarea rows="" cols="" name='description'></textarea>
+      </div>
+
+      <button type="submit">save</button> 
+    </form>
+  </body>
+</html>
