@@ -1,4 +1,5 @@
 const Category = require('../models/category');
+const Items = require('../models/items');
 const asyncHanlder = require('express-async-handler');
 const { body, validationResult } = require('express-validator');
 const mongoose = require('mongoose')
@@ -81,6 +82,48 @@ exports.genre_create_post = [
   })
 ]
 
+
+//Display category delete
+exports.category_delete_get = asyncHanlder(async (req, res, next) => {
+
+  const [category, allItemsInCategory] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Items.find({ category: req.params.id }).exec(),
+  ]);
+
+  if (category === null) {
+    res.redirect('/categories');
+  }
+
+  res.render('category_delete', {
+    title: 'Delete Category',
+    category: category,
+    category_items: allItemsInCategory
+  });
+});
+
+
+// handle category delete on post
+exports.category_delete_post = asyncHanlder(async (req, res, next) => {
+  const [category, allItemsInCategory] = await Promise.all([
+    Category.findById(req.params.id).exec(),
+    Items.find({ category: req.params.id }).exec(),
+  ]);
+
+  if (allItemsInCategory.length > 0) {
+
+    res.render('category_delete', {
+      title: 'Delete category',
+      category: category,
+      category_items: allItemsInCategory,
+    });
+    return;
+  } else {
+
+    await Category.findByIdAndDelete(req.body.categoryid);
+    res.redirect('/categories');
+  }
+});
 
 
 

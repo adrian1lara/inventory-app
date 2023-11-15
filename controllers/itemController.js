@@ -105,3 +105,36 @@ exports.item_create_post = [
     }
   }),
 ];
+
+
+//Display item delete
+exports.item_delete_get = asyncHandler(async (req, res, next) => {
+
+  const item = await Items.findById(req.params.id).exec();
+
+  if (item === null) {
+    res.redirect('/items')
+  }
+
+  res.render('item_delete', {
+    title: 'Item delete',
+    item: item,
+  });
+});
+
+
+// handle item delete on post
+exports.item_delete_post = asyncHandler(async (req, res, next) => {
+
+  try {
+    // No need to revalidate the existence of the item; it was done in the GET request
+    // Use await to get the result of the asynchronous operation
+    await Items.findByIdAndDelete(req.body.itemid);
+
+    // Redirect after successful deletion
+    return res.redirect('/items');
+  } catch (error) {
+    // Handle errors appropriately
+    return next(error);
+  }
+})
