@@ -15,14 +15,20 @@ router.get('/', function(req, res, next) {
 // Category Routes
 router.get('/categories', category_controller.category_list);
 
+// get create a category
+router.get('/category/create', category_controller.category_create_get);
+
+// post request for creating category
+router.post('/category/create', category_controller.genre_create_post);
+
 // get one category 
 router.get('/category/:id', category_controller.category_detail);
 
-// get create a category
-router.get('/categories/create', category_controller.category_create_get);
+// Display category delete form on get 
+router.get('/category/:id/delete', category_controller.category_delete_get);
 
-// post request for creating category
-router.post('/categories/create', category_controller.genre_create_post);
+// Handle category delete form on POST
+router.post('/category/:id/delete', category_controller.category_delete_post);
 
 // items routes 
 router.get('/items', items_controller.item_list);
@@ -33,8 +39,13 @@ router.get('/item/create', items_controller.item_create_get);
 // post request for creating item 
 router.post('/item/create', items_controller.item_create_post);
 
-
 // get one item 
 router.get('/item/:id', items_controller.item_detail);
+
+// get delete form 
+router.get('/item/:id/delete', items_controller.item_delete_get);
+
+// handle item delete form on post
+router.post('/item/:id/delete', items_controller.item_delete_post);
 
 module.exports = router;
