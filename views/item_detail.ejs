@@ -7,6 +7,7 @@
   </head>
   <body>
     <h1><%= title %></h1>
+    <a href="/items">back</a>
     <div>
       <p>Name: <%=item_detail.name%></p>
       <p>Descrip: <%=item_detail.description%></p>
@@ -15,6 +16,7 @@
       <p>Stock: <%=item_detail.stock%></p>
 
       <a href="<%=item_detail.url%>/delete">delete</a>
+      <a href="<%=item_detail.url%>/update">update</a>
     </div>
   </body>
 </html>
