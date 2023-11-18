@@ -5,18 +5,120 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
-  <body>
-    <h1><%= title %></h1>
-    <a href="/items">back</a>
-    <div>
-      <p>Name: <%=item_detail.name%></p>
-      <p>Descrip: <%=item_detail.description%></p>
-      <p>Price: <%=item_detail.price%></p>
-      <p>category: <%=categoryName.name%></p>
-      <p>Stock: <%=item_detail.stock%></p>
+  <body class='bg-slate-900'>
+<header>
+     <nav class="bg-gray-800">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+          <div class="relative flex h-16 items-center justify-between">
+             <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+             
+              <button type="button"
+                id="mobile-menu-button"
+                class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                <span class="absolute -inset-0.5"></span>
+                <span class="sr-only">Open main menu</span>
+              <!--
+            Icon when menu is closed.
 
-      <a href="<%=item_detail.url%>/delete">delete</a>
-      <a href="<%=item_detail.url%>/update">update</a>
+            Menu open: "hidden", Menu closed: "block"
+          -->
+                <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+                <!--
+            Icon when menu is open.
+
+            Menu open: "block", Menu closed: "hidden"
+          -->
+                <svg class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+             </div>
+            <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div class="flex flex-shrink-0 items-center">
+                <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="my logo">
+              </div>
+              <div class="hidden sm:ml-6 sm:block">
+                <div class="flex space-x-4">
+                  <a href="/" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Home</a>
+                  <a href="/categories" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Categories</a>
+                  <a href="/items" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Items</a>
+                </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+     
+        <!-- Mobile menu, show/hide based on menu state. -->
+  
+        <div class="sm:hidden hidden" id="mobile-menu">
+    
+          <div class="space-y-1 px-2 pb-3 pt-2">
+      
+            <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> 
+      
+            <a href="/" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Home</a>
+      
+            <a href="/categories" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Categories</a>
+      
+            <a href="/items" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Items</a>
+    
+          </div>
+  
+        </div> 
+     </nav> 
+    </header>
+
+      <div
+      class="flex min-h-screen items-center justify-center">
+        <div
+        class="mx-auto px-5">
+          <div
+          class="max-w-xs cursor-pointer rounded-lg bg-white p-2 shadow duration-150 hover:scale-105 hover:shadow-md">
+            <div>
+              <div class="my-6 flex items-center justify-between px-4">
+                <p class="font-bold text-gray-500"><%=item_detail.name%></p>
+                <p class="rounded-full bg-blue-500 px-2 py-0.5 text-xs font-semibold text-white"></p>
+              </div>
+
+              <div
+              class="my-6 flex items-center justify-between px-4">
+                <p class="text-sm font-semibold text-gray-500"><%=item_detail.description%></p>
+                <p class="rounded-full px-2 py-0.5 text-xs font-semibold text-white"></p>
+              </div>
+
+              <div class="my-4 flex items-center justify-between px-4">
+                <p class="text-sm font-semibold text-gray-500">Price</p>
+                <p class="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-semibold text-gray-600">$<%=item_detail.price%></p>
+              </div>
+
+              <div class="my-4 flex items-center justify-between px-4">
+                <p class="text-sm mr-4 font-semibold text-gray-500 ">Category</p>
+                <p class="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-semibold text-gray-600"><%=categoryName.name%></p>
+              </div>
+            </div>
+            <div class="my-4 flex items-center justify-between px-4">
+              <p class="text-sm font-semibold text-gray-500">Stock</p>
+              <p class="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-semibold text-gray-600"><%=item_detail.stock%></p>
+            </div>
+
+            <div class="flex space-x-4 py-4 text-center"> 
+              <a href='<%=item_detail.url%>/update'
+                class="w-full bg-blue-500 text-white rounded-full px-4 py-2 hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">
+                update
+              </a>
+              <a href="<%=item_detail.url%>/delete"
+              class="w-full bg-red-600 text-white rounded-full px-4 py-2 hover:bg-red-700 focus:outline-none focus:shadow-outline-blue active:bg-blue-800">
+                delete
+              </a>
+          </div>
+        </div>
+        
+      </div>
     </div>
+    <script src='/javascripts/dom.js'>
+      
+    </script>
   </body>
 </html>
