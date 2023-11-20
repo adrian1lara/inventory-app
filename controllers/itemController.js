@@ -7,11 +7,17 @@ const { body, validationResult } = require('express-validator');
 
 // display list of items
 exports.item_list = asyncHandler(async (req, res, next) => {
-  const allItems = await Items.find().exec();
-  res.render('item_list', {
-    title: 'Item list',
-    item_list: allItems
-  });
+  try {
+    const allItems = await Items.find();
+    res.render('item_list', {
+      title: 'Item list',
+      item_list: allItems
+    });
+  } catch (err) {
+    // Pass the error to the next middleware
+    console.error(err)
+    next(err);
+  }
 });
 
 

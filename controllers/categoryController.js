@@ -6,11 +6,16 @@ const mongoose = require('mongoose')
 
 // list of all catgories
 exports.category_list = asyncHanlder(async (req, res, next) => {
-  const allCategories = await Category.find().sort({ name: 1 }).exec();
-  res.render('category_list', {
-    title: "Category List",
-    category_list: allCategories,
-  });
+  try {
+    const allCategories = await Category.find();
+    res.render('category_list', {
+      title: "Category List",
+      category_list: allCategories,
+    });
+  } catch (err) {
+    console.error(err)
+    next(err)
+  }
 });
 
 // detail page for specific category
